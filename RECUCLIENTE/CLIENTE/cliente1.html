@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes SSE - Cliente de Envío</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            background-image: url(/images//hilda-and-tepig-watching-castelia-city-pokemon-pixel-thumb.jpg);
+        }
+
+        button{
+          background-color: #4CAF50;
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          
+        }
+
+        select {
+          margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #0e0e0e; /* Borde rosa claro */
+            border-radius: 5px;
+            background-color: #ffff; /* Fondo blanco */
+        }
+
+        input {
+          margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #ffffff; /* Borde rosa claro */
+            border-radius: 5px;
+            background-color: transparent; /* Fondo blanco */
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Enviar Mensaje</h1>
+        <input type="text" id="message" placeholder="Escribe tu mensaje">
+        <select id="type">
+            <option value="alumno">Alumno</option>
+            <option value="docente">Docente</option>
+        </select>
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            const type = document.getElementById('type').value;
+
+            fetch('http://localhost:3000/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message, type })
+            }).then(response => response.text()).then(data => console.log(data));
+        }
+    </script>
+</body>
+</html>

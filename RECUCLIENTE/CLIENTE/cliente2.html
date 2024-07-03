@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Mensajes SSE - Cliente de Recepción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            background-image:url(/images/image.jpg) ;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #ffffff; /* Texto blanco */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+            padding: 8px;
+            border: 1px solid #E687C1; /* Borde rosa claro */
+            border-radius: 5px;
+            background-color: transparent; /* Fondo blanco */
+        }
+
+        ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        ul {
+          color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Alumnos</h2>
+        <ul id="alumnosMessages"></ul>
+    </div>
+    <div>
+        <h2>Docentes</h2>
+        <ul id="docentesMessages"></ul>
+    </div>
+
+    <script>
+        function startListening() {
+            const alumnosEventSource = new EventSource('http://localhost:3000/events/alumnos');
+            alumnosEventSource.onmessage = function(event) {
+                const messages = JSON.parse(event.data);
+                const alumnosList = document.getElementById('alumnosMessages');
+                alumnosList.innerHTML = '';
+                messages.forEach(msg => {
+                    const li = document.createElement('li');
+                    li.textContent = msg;
+                    alumnosList.appendChild(li);
+                });
+            };
+
+            const docentesEventSource = new EventSource('http://localhost:3000/events/docentes');
+            docentesEventSource.onmessage = function(event) {
+                const messages = JSON.parse(event.data);
+                const docentesList = document.getElementById('docentesMessages');
+                docentesList.innerHTML = '';
+                messages.forEach(msg => {
+                    const li = document.createElement('li');
+                    li.textContent = msg;
+                    docentesList.appendChild(li);
+                });
+            };
+        }
+
+        window.onload = startListening;
+    </script>
+</body>
+</html>
